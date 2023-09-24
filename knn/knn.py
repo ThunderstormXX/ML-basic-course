@@ -169,18 +169,7 @@ class KNearestNeighbor:
             # label.                                                                #
             #########################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-            counter = {closest_y[0] : 1}
-            top_label = closest_y[0]
-            top_value = 1
-            for label in closest_y[1:]:
-                if label in counter  :
-                    counter[label] +=1 
-                else :
-                    counter[label] = 1
-                if counter[label] > top_value :
-                    top_label = label
-                    top_value = counter[label]
-            y_pred[i] = top_label
+            y_pred[i] = np.bincount(closest_y).argmax()
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
         return y_pred
