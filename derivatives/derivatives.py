@@ -15,8 +15,10 @@ class LossAndDerivatives:
         
         Comment: If Y is two-dimentional, average the error over both dimentions.
         """
-
-        return np.mean((X.dot(w) - Y)**2)
+        if len(Y.shape) == 1:
+            return np.mean((np.dot(X, w) - Y) ** 2)
+        else:
+            return np.mean(np.mean((np.dot(X, w) - Y) ** 2, axis=0))
 
     @staticmethod
     def mae(X, Y, w):
@@ -33,7 +35,11 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE    
-        return 
+        if len(Y.shape) == 1:
+            return np.mean(np.abs(np.dot(X, w) - Y))
+        else:
+            return np.mean(np.mean(np.abs(np.dot(X, w) - Y), axis=0))
+
 
     @staticmethod
     def l2_reg(w):
@@ -47,7 +53,7 @@ class LossAndDerivatives:
         """
         
         # YOUR CODE HERE
-        return 
+        return np.sum(w**2)
 
     @staticmethod
     def l1_reg(w):
@@ -61,7 +67,7 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE
-        return 
+        return np.sum(np.abs(w))
 
     @staticmethod
     def no_reg(w):
@@ -87,8 +93,12 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE
-        return 
-
+        if len(Y.shape) == 1:
+            error = (np.dot(X, w) - Y)
+            return 2*np.dot(X.T, error) / X.shape[0]
+        else:
+            error = (np.dot(X, w) - Y)
+            return 2*np.dot(X.T, error) / X.shape[0]/Y.shape[1]
     @staticmethod
     def mae_derivative(X, Y, w):
         """
@@ -106,7 +116,12 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE
-        return 
+        if len(Y.shape) == 1:
+            sign = np.sign(np.dot(X, w) - Y)
+            return np.dot(X.T, sign) / X.shape[0]
+        else:
+            sign = np.sign(np.dot(X, w) - Y)
+            return np.dot(X.T, sign) / X.shape[0] /Y.shape[1]
 
     @staticmethod
     def l2_reg_derivative(w):
@@ -119,7 +134,7 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE
-        return 
+        return 2*w
 
     @staticmethod
     def l1_reg_derivative(w):
@@ -133,7 +148,7 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE
-        return 
+        return np.sign(w)
 
     @staticmethod
     def no_reg_derivative(w):
